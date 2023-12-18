@@ -222,9 +222,9 @@ const AreaSideNavbar = () => {
                   <AccordionItemWithEye title="All Companies">
                     <TreeView data={treeData} />
                   </AccordionItemWithEye>
-                  <AccordionItemWithEye title="All Companies">
+                  {/* <AccordionItemWithEye title="All Companies">
                     {JSON.stringify(syncPropertyFeatures)}
-                  </AccordionItemWithEye>
+                  </AccordionItemWithEye> */}
                 </div>
               </Accordion>
             </div>
