@@ -56,7 +56,7 @@ const SideNavbar = () => {
     (state) => state.areaMapReducer.isAreaSideNavOpen
   );
   const areaCountry = useSelector((state) => state.areaMapReducer.areaCountry);
-  const areaState = useSelector((state) => state.areaMapReducer.areaState);
+  const areaState = useSelector((state) => state.areaMapReducer.areaMiningArea);
 
   const selectMapHandler = (selectedValue) => {
     dispatch(setSelectedMap(selectedValue));

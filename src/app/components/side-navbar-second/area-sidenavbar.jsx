@@ -164,7 +164,7 @@ const AreaSideNavbar = () => {
                         title="Operating Mines"
                         onClick={() => console.log("Operating Mines")}
                       >
-                        <div className="w-4 h-4 bg-"></div>
+                        <div className="w-4 h-4 bg-[#FDBA12]"></div>
                       </FeaturedCompanyDetailDiv>
                     </div>
                   </AccordionItemWithEye>

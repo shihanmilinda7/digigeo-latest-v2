@@ -63,17 +63,17 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   }, [isOpenIn]);
   //areal load
   useEffect(() => {
-    const f =async  () => {
-                const res = await fetch(`http://44.208.84.139/miniatlas/areas/${country}`, { cache: 'force-cache' })
-                const d = await  res.json() 
-                console.log("areas",d.data)
-                  setAreaList(d.data)
-        } 
+    const f = async () => {
+      const res = await fetch(
+        `http://44.208.84.139/miniatlas/areas/${country}`,
+        { cache: "force-cache" }
+      );
+      const d = await res.json();
+      console.log("areas", d.data);
+      setAreaList(d.data);
+    };
 
-     f().catch(console.error);
-
-
-   
+    f().catch(console.error);
   }, [country]);
 
   const searchAction = async () => {
@@ -89,22 +89,19 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   };
   //const animals = [{value:"qqq", label:"q1"},{value:"qqq2", label:"q2"},{value:"qqq3", label:"q3"}]
 
-   
-  useEffect(  () => {
-    
-    const f =async  () => {
-            const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
-            const d = await  res.json() 
-            console.log("w2",d.data)
-              setCountryList(d.data)
-    } 
+  useEffect(() => {
+    const f = async () => {
+      const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, {
+        cache: "force-cache",
+      });
+      const d = await res.json();
+      console.log("w2", d.data);
+      setCountryList(d.data);
+    };
 
-     f().catch(console.error);
+    f().catch(console.error);
+  }, []);
 
-  
-     
-  }, [])
-  
   return (
     <div>
       <Modal
@@ -132,30 +129,34 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     Exploration Areas
                   </span>
                   <div className="flex gap-2">
-                    <Autocomplete label="Select a country" className="max-w-xs" onInputChange={(e) => {
-                   
-                    setCountry(e)
-                  
-                  }}>
+                    <Autocomplete
+                      label="Select a country"
+                      className="max-w-xs"
+                      onInputChange={(e) => {
+                        setCountry(e);
+                      }}
+                    >
                       {countryList.map((countryObj) => (
                         <AutocompleteItem
                           key={countryObj.country}
                           value={countryObj.country}
-                          
                         >
                           {countryObj.country}
                         </AutocompleteItem>
                       ))}
                     </Autocomplete>
 
-                     <Autocomplete label="Select a mining area" className="max-w-xs" onInputChange={(e) => {
-                     setMiningArea(e)
-                  }}>
+                    <Autocomplete
+                      label="Select a mining area"
+                      className="max-w-xs"
+                      onInputChange={(e) => {
+                        setMiningArea(e);
+                      }}
+                    >
                       {areaList.map((areaObj) => (
                         <AutocompleteItem
                           key={areaObj.area_name}
                           value={areaObj.area_name}
-                          
                         >
                           {areaObj.area_name}
                         </AutocompleteItem>
