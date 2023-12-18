@@ -22,6 +22,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [country, setCountry] = useState("");
   const [countryList, setCountryList] = useState([]);
+  const [areaList, setAreaList] = useState([]);
   const [miningArea, setMiningArea] = useState("");
 
   const selectedMap = useSelector(
@@ -60,6 +61,20 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   useEffect(() => {
     setIsOpen(isOpenIn);
   }, [isOpenIn]);
+  //areal load
+  useEffect(() => {
+    const f =async  () => {
+                const res = await fetch(`https://44.208.84.139/miniatlas/areas/${country}`, { cache: 'force-cache' })
+                const d = await  res.json() 
+                console.log("areas",d.data)
+                  setAreaList(d.data)
+        } 
+
+     f().catch(console.error);
+
+
+   
+  }, [country]);
 
   const searchAction = async () => {
     if (areaCountry && areaState) {
@@ -78,7 +93,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   useEffect(  () => {
     
     const f =async  () => {
-            const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
+            const res = await fetch(`https://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
             const d = await  res.json() 
             console.log("w2",d.data)
               setCountryList(d.data)
@@ -117,13 +132,32 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     Exploration Areas
                   </span>
                   <div className="flex gap-2">
-                    <Autocomplete label="Select a country" className="max-w-xs">
+                    <Autocomplete label="Select a country" className="max-w-xs" onInputChange={(e) => {
+                      console.log("pppp", e)
+                    setCountry(e)
+                  
+                  }}>
                       {countryList.map((countryObj) => (
                         <AutocompleteItem
                           key={countryObj.country}
                           value={countryObj.country}
+                          
                         >
                           {countryObj.country}
+                        </AutocompleteItem>
+                      ))}
+                    </Autocomplete>
+
+                     <Autocomplete label="Select a mining area" className="max-w-xs" onInputChange={(e) => {
+                      console.log("sss", e)
+                  }}>
+                      {areaList.map((areaObj) => (
+                        <AutocompleteItem
+                          key={areaObj.area_name}
+                          value={areaObj.area_name}
+                          
+                        >
+                          {areaObj.area_name}
                         </AutocompleteItem>
                       ))}
                     </Autocomplete>
@@ -134,13 +168,13 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                       className="w-full rounded-lg border border-blue-500"
                       variant="bordered"bbb
                     /> */}
-                    <NextTextInputField
+                    {/* <NextTextInputField
                       label="Mining Area"
                       value={miningArea}
                       onChange={(e) => setMiningArea(e.target.value)}
                       className="w-full rounded-lg border border-blue-500"
                       variant="bordered"
-                    />
+                    /> */}
                   </div>
                 </div>
               </div>
