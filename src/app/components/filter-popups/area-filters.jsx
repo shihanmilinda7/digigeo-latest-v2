@@ -16,7 +16,6 @@ import {
 
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 
-
 const AreaFilter = ({ isOpenIn, closePopup }) => {
   const dispatch = useDispatch();
 
@@ -76,7 +75,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   //const animals = [{value:"qqq", label:"q1"},{value:"qqq2", label:"q2"},{value:"qqq3", label:"q3"}]
 
    
-  useEffect(    () => {
+  useEffect(  () => {
     
     const f =async  () => {
             const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
@@ -85,11 +84,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
               setCountryList(d.data)
     } 
 
-    f();
-
-   
-
-   
+    setCountryList(f())
   
      
   }, [])
@@ -121,16 +116,16 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     Exploration Areas
                   </span>
                   <div className="flex gap-2">
-                      <Autocomplete 
-                      label="Select an animal" 
-                      className="max-w-xs" 
-                      >
+                    <Autocomplete label="Select an animal" className="max-w-xs">
                       {countryList.map((countryObj) => (
-                      <AutocompleteItem key={countryObj.country} value={countryObj.country}>
-                      {countryObj.country}
-                      </AutocompleteItem>
+                        <AutocompleteItem
+                          key={countryObj.country}
+                          value={countryObj.country}
+                        >
+                          {countryObj.country}
+                        </AutocompleteItem>
                       ))}
-                      </Autocomplete>
+                    </Autocomplete>
                     {/* <NextTextInputField
                       label="Country"
                       value={country}
