@@ -21,6 +21,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { MdLocationOn } from "react-icons/md";
 import AreaFilter from "../filter-popups/area-filters";
 import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
+import TreeView from "../common-comp/treeview";
 
 const AreaSideNavbar = () => {
   let pathname = "";
@@ -55,11 +56,44 @@ const AreaSideNavbar = () => {
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
-  // useEffect(() => {
-  //   if (areaCountry && areaState) {
-  //     setIsSecondSideOpen(true);
-  //   }
-  // }, [areaCountry, areaState]);
+  const treeData = [
+    {
+      label: "Node 1",
+      children: [
+        {
+          label: "Node 1.1",
+          children: [
+            {
+              label: "Node 1.1.1",
+              children: [
+                {
+                  label: "Node 1.1.1.1",
+                  children: [],
+                },
+              ],
+            },
+            {
+              label: "Node 1.1.2",
+              children: [],
+            },
+          ],
+        },
+        {
+          label: "Node 1.2",
+          children: [],
+        },
+      ],
+    },
+    {
+      label: "Node 2",
+      children: [
+        {
+          label: "Node 2.1",
+          children: [],
+        },
+      ],
+    },
+  ];
 
   const closeSecondNavBar = () => {
     // setIsSecondSideOpen(false);
@@ -97,7 +131,9 @@ const AreaSideNavbar = () => {
               />
             </div>
           </div>
-          <div className="mt-4 flex flex-col gap-4 relative"></div>
+          <div className="mt-4 flex flex-col gap-4 relative">
+            <TreeView data={treeData} />
+          </div>
         </div>
       </div>
     </section>
