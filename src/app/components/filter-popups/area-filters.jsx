@@ -74,18 +74,19 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   };
   //const animals = [{value:"qqq", label:"q1"},{value:"qqq2", label:"q2"},{value:"qqq3", label:"q3"}]
 
-  useEffect(() => {
-    const f = async () => {
-      const countries = await fetch(
-        `https://44.208.84.139/miniatlas/countrylist`,
-        { cache: "force-cache" }
-      );
-      return countries.data;
-    };
+   
+  useEffect(  () => {
+    
+    const f =async  () => {
+            const countries = await fetch(`https://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
+            return countries.data
+    } 
 
-    setCountryList(f());
-  }, []);
-
+    setCountryList(f())
+  
+     
+  }, [])
+  
   return (
     <div>
       <Modal
