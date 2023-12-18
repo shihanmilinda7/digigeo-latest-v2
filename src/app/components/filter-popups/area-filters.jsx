@@ -116,7 +116,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     Exploration Areas
                   </span>
                   <div className="flex gap-2">
-                    <Autocomplete label="Select an animal" className="max-w-xs">
+                    <Autocomplete label="Select an country" className="max-w-xs">
                       {countryList.map((countryObj) => (
                         <AutocompleteItem
                           key={countryObj.country}
