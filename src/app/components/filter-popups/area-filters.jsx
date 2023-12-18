@@ -132,7 +132,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                       value={country}
                       onChange={(e) => setCountry(e.target.value)}
                       className="w-full rounded-lg border border-blue-500"
-                      variant="bordered"
+                      variant="bordered"bbb
                     /> */}
                     <NextTextInputField
                       label="Mining Area"
