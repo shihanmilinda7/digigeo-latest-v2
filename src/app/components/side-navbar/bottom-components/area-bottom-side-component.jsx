@@ -53,7 +53,7 @@ const AreaBottomSideComp = () => {
       <div className="ml-2 mr-2 mt-1 mb-1 flex items-center justify-center border-b-2">
         <span className="font-bold">Map Layers</span>
       </div>
-      <div className="overflow-y-scroll max-h-[40vh]">
+      <div className="overflow-y-auto max-h-[40vh]">
         <Accordion>
           <div className="flex flex-col gap-6">
             <AccordionItemWithEye title="Assets">
