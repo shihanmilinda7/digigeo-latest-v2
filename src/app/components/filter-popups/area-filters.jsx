@@ -61,6 +61,10 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
     setIsOpen(isOpenIn);
   }, [isOpenIn]);
 
+  useEffect(() => {
+    console.log("country", country);
+  }, [country]);
+
   const searchAction = async () => {
     if (areaCountry && areaState) {
       const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=true&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
@@ -74,22 +78,19 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   };
   //const animals = [{value:"qqq", label:"q1"},{value:"qqq2", label:"q2"},{value:"qqq3", label:"q3"}]
 
-   
-  useEffect(  () => {
-    
-    const f =async  () => {
-            const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
-            const d = await  res.json() 
-            console.log("w2",d.data)
-              setCountryList(d.data)
-    } 
+  useEffect(() => {
+    const f = async () => {
+      const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, {
+        cache: "force-cache",
+      });
+      const d = await res.json();
+      // console.log("w2", d.data);
+      setCountryList(d.data);
+    };
 
-     f().catch(console.error);
+    f().catch(console.error);
+  }, []);
 
-  
-     
-  }, [])
-  
   return (
     <div>
       <Modal
@@ -117,7 +118,12 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     Exploration Areas
                   </span>
                   <div className="flex gap-2">
-                    <Autocomplete label="Select a country" className="max-w-xs">
+                    <Autocomplete
+                      label="Select a country"
+                      className="max-w-xs"
+                      selectedKey={country}
+                      onSelectionChange={(e) => setCountry(e)}
+                    >
                       {countryList.map((countryObj) => (
                         <AutocompleteItem
                           key={countryObj.country}
