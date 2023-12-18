@@ -58,13 +58,22 @@ const AreaBottomSideComp = () => {
           <div className="flex flex-col gap-6">
             <AccordionItemWithEye title="Assets">
               <div className="flex flex-col gap-1">
-                <LayerVisibleDiv title="Operating Mines">
+                <LayerVisibleDiv
+                  title="Operating Mines"
+                  onClick={() => console.log("Operating Mines")}
+                >
                   <AiFillAppstore />
                 </LayerVisibleDiv>
-                <LayerVisibleDiv title="Deposits">
+                <LayerVisibleDiv
+                  title="Deposits"
+                  onClick={() => console.log("Deposits")}
+                >
                   <AiFillAppstore />
                 </LayerVisibleDiv>
-                <LayerVisibleDiv title="Zone">
+                <LayerVisibleDiv
+                  title="Zone"
+                  onClick={() => console.log("Zone")}
+                >
                   <AiFillAppstore />
                 </LayerVisibleDiv>
                 <LayerVisibleDiv title="Historical Mines">

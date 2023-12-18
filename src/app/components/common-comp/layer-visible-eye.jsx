@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { FaChevronDown, FaChevronLeft, FaChevronUp } from "react-icons/fa";
 import { VscEyeClosed } from "react-icons/vsc";
 
-const LayerVisibleDiv = ({ title, children }) => {
+const LayerVisibleDiv = ({ title, children, onClick }) => {
   return (
     <div>
       <div
@@ -17,7 +17,11 @@ const LayerVisibleDiv = ({ title, children }) => {
             {isOpen ? <FaChevronDown /> : <FaChevronLeft />}
           </span> */}
           <span className="">
-            <VscEyeClosed className="cursor-pointer" />
+            <VscEyeClosed
+              className="cursor-pointer"
+              onClick={onClick}
+              // onClick={() => console.log("title", title)}
+            />
           </span>
         </div>
       </div>
