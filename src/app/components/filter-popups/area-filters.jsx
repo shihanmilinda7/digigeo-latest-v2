@@ -84,7 +84,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
               setCountryList(d.data)
     } 
 
-    
+    f();
   
      
   }, [])
