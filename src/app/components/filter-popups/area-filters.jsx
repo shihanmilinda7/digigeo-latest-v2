@@ -76,14 +76,20 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   //const animals = [{value:"qqq", label:"q1"},{value:"qqq2", label:"q2"},{value:"qqq3", label:"q3"}]
 
    
-  useEffect(  () => {
+  useEffect(    () => {
     
     const f =async  () => {
-            const countries = await fetch(`https://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
-            return countries.data
+            const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
+            const d = await  res.json() 
+            console.log("w2",d.data)
+            
     } 
 
-    setCountryList(f())
+    f();
+
+   
+
+   
   
      
   }, [])
