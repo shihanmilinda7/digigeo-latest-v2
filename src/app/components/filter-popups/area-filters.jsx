@@ -82,7 +82,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
             const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
             const d = await  res.json() 
             console.log("w2",d.data)
-            
+              setCountryList(d.data)
     } 
 
     f();
