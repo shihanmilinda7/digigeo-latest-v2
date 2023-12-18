@@ -63,21 +63,23 @@ const AreaSideNavbar = () => {
 
   const areaName = useSelector((state) => state.areaMapReducer.areaMiningArea);
 
+  const [featuredCompanies, setFeaturedCompanies] = useState([]);
   //areal load
   useEffect(() => {
-    const f =async  () => {
-                const res = await fetch(`http://44.208.84.139/miniatlas/view_hotplay_table_with_sponsor/${areaName}`, { cache: 'force-cache' })
-                const d = await  res.json() 
-                console.log("fps",d )
-      console.log("fps", d.data[0].json_build_object)
-      
-      
-                d.data[0].json_build_object.features.map(i=> console.log("i",i.properties.colour))
-      
+    const f = async () => {
+      const res = await fetch(
+        `http://44.208.84.139/miniatlas/hotplayowenersview/${areaName}`,
+        { cache: "force-cache" }
+      );
+      const d = await res.json();
+      // console.log("fps", d);
+      console.log("fps", d.data);
 
-
-                 
-        } 
+      setFeaturedCompanies(d.data);
+      // d.data[0].json_build_object.features.map((i) =>
+      //   console.log("i", i.properties.colour)
+      // );
+    };
 
     f().catch(console.error);
   }, [areaName]);
@@ -164,12 +166,14 @@ const AreaSideNavbar = () => {
                 <div className="flex flex-col gap-6">
                   <AccordionItemWithEye title="Featured Companies">
                     <div className="flex flex-col gap-1 overflow-y-auto max-h-[40vh]">
-                      <FeaturedCompanyDetailDiv
-                        title="Operating Mines"
-                        onClick={() => console.log("Operating Mines")}
-                      >
-                        <div className="w-4 h-4 bg-[#FDBA12]"></div>
-                      </FeaturedCompanyDetailDiv>
+                      {featuredCompanies.map((i) => (
+                        <FeaturedCompanyDetailDiv
+                          title="Operating Mines"
+                          onClick={() => console.log(`bg-[${i.colour}]`)}
+                        >
+                          <div className={`w-4 h-4 bg-[${i.colour.trim()}]`}></div>
+                        </FeaturedCompanyDetailDiv>
+                      ))}
                     </div>
                   </AccordionItemWithEye>
                 </div>
