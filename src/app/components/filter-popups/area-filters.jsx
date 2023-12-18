@@ -16,7 +16,6 @@ import {
 
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 
-
 const AreaFilter = ({ isOpenIn, closePopup }) => {
   const dispatch = useDispatch();
 
@@ -75,19 +74,18 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   };
   //const animals = [{value:"qqq", label:"q1"},{value:"qqq2", label:"q2"},{value:"qqq3", label:"q3"}]
 
-   
-  useEffect(  () => {
-    
-    const f =async  () => {
-            const countries = await fetch(`https://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
-            return countries.data
-    } 
+  useEffect(() => {
+    const f = async () => {
+      const countries = await fetch(
+        `https://44.208.84.139/miniatlas/countrylist`,
+        { cache: "force-cache" }
+      );
+      return countries.data;
+    };
 
-    setCountryList(f())
-  
-     
-  }, [])
-  
+    setCountryList(f());
+  }, []);
+
   return (
     <div>
       <Modal
@@ -115,16 +113,16 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     Exploration Areas
                   </span>
                   <div className="flex gap-2">
-                      <Autocomplete 
-                      label="Select an animal" 
-                      className="max-w-xs" 
-                      >
+                    <Autocomplete label="Select an animal" className="max-w-xs">
                       {countryList.map((countryObj) => (
-                      <AutocompleteItem key={countryObj.country} value={countryObj.country}>
-                      {countryObj.country}
-                      </AutocompleteItem>
+                        <AutocompleteItem
+                          key={countryObj.country}
+                          value={countryObj.country}
+                        >
+                          {countryObj.country}
+                        </AutocompleteItem>
                       ))}
-                      </Autocomplete>
+                    </Autocomplete>
                     {/* <NextTextInputField
                       label="Country"
                       value={country}
