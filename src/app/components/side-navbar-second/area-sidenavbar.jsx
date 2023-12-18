@@ -3,6 +3,7 @@
 import { Button, Input } from "@nextui-org/react";
 import React, { useEffect, useState } from "react";
 import {
+  AiFillAppstore,
   AiFillMinusSquare,
   AiFillPlusSquare,
   AiOutlineCloseCircle,
@@ -22,6 +23,9 @@ import { MdLocationOn } from "react-icons/md";
 import AreaFilter from "../filter-popups/area-filters";
 import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
 import TreeView from "../common-comp/treeview";
+import Accordion from "../common-comp/accordion";
+import AccordionItemWithEye from "../common-comp/accordion-eye";
+import FeaturedCompanyDetailDiv from "../common-comp/featured-company-detail-div";
 
 const AreaSideNavbar = () => {
   let pathname = "";
@@ -38,7 +42,6 @@ const AreaSideNavbar = () => {
     }
   }
 
- 
   const [isSecondSideOpen, setIsSecondSideOpen] = useState(false);
 
   const isSideNavOpen = useSelector(
@@ -58,11 +61,9 @@ const AreaSideNavbar = () => {
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
-    const areaName = useSelector(
-    (state) => state.areaMapReducer.areaMiningArea
-  );
+  const areaName = useSelector((state) => state.areaMapReducer.areaMiningArea);
 
-   //areal load
+  //areal load
   useEffect(() => {
     const f =async  () => {
                 const res = await fetch(`http://44.208.84.139/miniatlas/view_hotplay_table_with_sponsor/${areaName}`, { cache: 'force-cache' })
@@ -78,12 +79,8 @@ const AreaSideNavbar = () => {
                  
         } 
 
-     f().catch(console.error);
-
-
-   
+    f().catch(console.error);
   }, [areaName]);
-
 
   const treeData = [
     {
@@ -161,7 +158,23 @@ const AreaSideNavbar = () => {
             </div>
           </div>
           <div className="mt-4 flex flex-col gap-4 relative">
-            <TreeView data={treeData} />
+            {/* <TreeView data={treeData} /> */}
+            <div>
+              <Accordion>
+                <div className="flex flex-col gap-6">
+                  <AccordionItemWithEye title="Featured Companies">
+                    <div className="flex flex-col gap-1 overflow-y-auto max-h-[40vh]">
+                      <FeaturedCompanyDetailDiv
+                        title="Operating Mines"
+                        onClick={() => console.log("Operating Mines")}
+                      >
+                        <div className="w-4 h-4 bg-"></div>
+                      </FeaturedCompanyDetailDiv>
+                    </div>
+                  </AccordionItemWithEye>
+                </div>
+              </Accordion>
+            </div>
           </div>
         </div>
       </div>
