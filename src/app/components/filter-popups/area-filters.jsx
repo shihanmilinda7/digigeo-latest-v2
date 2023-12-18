@@ -14,11 +14,15 @@ import {
   setIsAreaSideNavOpen,
 } from "../../../store/area-map/area-map-slice";
 
+import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+
+
 const AreaFilter = ({ isOpenIn, closePopup }) => {
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
   const [country, setCountry] = useState("");
+  const [countryList, setCountryList] = useState([]);
   const [miningArea, setMiningArea] = useState("");
 
   const selectedMap = useSelector(
@@ -69,7 +73,21 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
     }
     // dispatch(setAreaState("Canada"));
   };
+  //const animals = [{value:"qqq", label:"q1"},{value:"qqq2", label:"q2"},{value:"qqq3", label:"q3"}]
 
+   
+  useEffect(  () => {
+    
+    const f =async  () => {
+            const countries = await fetch(`https://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
+            return countries.data
+    } 
+
+    setCountryList(f())
+  
+     
+  }, [])
+  
   return (
     <div>
       <Modal
@@ -97,13 +115,23 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     Exploration Areas
                   </span>
                   <div className="flex gap-2">
-                    <NextTextInputField
+                      <Autocomplete 
+                      label="Select an animal" 
+                      className="max-w-xs" 
+                      >
+                      {countryList.map((countryObj) => (
+                      <AutocompleteItem key={countryObj.country} value={countryObj.country}>
+                      {countryObj.country}
+                      </AutocompleteItem>
+                      ))}
+                      </Autocomplete>
+                    {/* <NextTextInputField
                       label="Country"
                       value={country}
                       onChange={(e) => setCountry(e.target.value)}
                       className="w-full rounded-lg border border-blue-500"
                       variant="bordered"
-                    />
+                    /> */}
                     <NextTextInputField
                       label="Mining Area"
                       value={miningArea}
