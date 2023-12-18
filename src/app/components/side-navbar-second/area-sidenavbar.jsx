@@ -65,15 +65,19 @@ const AreaSideNavbar = () => {
 
   //areal load
   useEffect(() => {
-    const f = async () => {
-      const res = await fetch(
-        `http://44.208.84.139/miniatlas/view_hotplay_table_with_sponsor/${areaName}`,
-        { cache: "force-cache" }
-      );
-      const d = await res.json();
-      console.log("fps", d);
-      console.log("fps", d.data[0].json_build_object);
-    };
+    const f =async  () => {
+                const res = await fetch(`http://44.208.84.139/miniatlas/view_hotplay_table_with_sponsor/${areaName}`, { cache: 'force-cache' })
+                const d = await  res.json() 
+                console.log("fps",d )
+      console.log("fps", d.data[0].json_build_object)
+      
+      
+                d.data[0].json_build_object.features.map(i=> console.log("i",i.properties.colour))
+      
+
+
+                 
+        } 
 
     f().catch(console.error);
   }, [areaName]);
