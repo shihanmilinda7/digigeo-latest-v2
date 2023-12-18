@@ -42,7 +42,6 @@ const AreaSideNavbar = () => {
     }
   }
 
- 
   const [isSecondSideOpen, setIsSecondSideOpen] = useState(false);
 
   const isSideNavOpen = useSelector(
@@ -62,26 +61,22 @@ const AreaSideNavbar = () => {
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
 
-    const areaName = useSelector(
-    (state) => state.areaMapReducer.areaMiningArea
-  );
+  const areaName = useSelector((state) => state.areaMapReducer.areaMiningArea);
 
-   //areal load
+  //areal load
   useEffect(() => {
-    const f =async  () => {
-                const res = await fetch(`http://44.208.84.139/miniatlas/view_hotplay_table_with_sponsor/${areaName}`, { cache: 'force-cache' })
-                const d = await  res.json() 
-                console.log("fps",d )
-                console.log("fps",d.data[0].json_build_object)
-                 
-        } 
+    const f = async () => {
+      const res = await fetch(
+        `http://44.208.84.139/miniatlas/view_hotplay_table_with_sponsor/${areaName}`,
+        { cache: "force-cache" }
+      );
+      const d = await res.json();
+      console.log("fps", d);
+      console.log("fps", d.data[0].json_build_object);
+    };
 
-     f().catch(console.error);
-
-
-   
+    f().catch(console.error);
   }, [areaName]);
-
 
   const treeData = [
     {
