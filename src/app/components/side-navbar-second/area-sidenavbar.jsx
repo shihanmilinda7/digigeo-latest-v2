@@ -69,7 +69,7 @@ const AreaSideNavbar = () => {
     const f = async () => {
       const res = await fetch(
         `http://44.208.84.139/miniatlas/hotplayowenersview/${areaName}`,
-        { cache: "force-cache" }
+        { cache: "no-store" }
       );
       const d = await res.json();
       // console.log("fps", d);
@@ -168,10 +168,11 @@ const AreaSideNavbar = () => {
                     <div className="flex flex-col gap-1 overflow-y-auto max-h-[40vh]">
                       {featuredCompanies.map((i) => (
                         <FeaturedCompanyDetailDiv
-                          title="Operating Mines"
+                          key={i.colour}
+                          title={i.colour}
                           onClick={() => console.log(`bg-[${i.colour}]`)}
                         >
-                          <div className={`w-4 h-4 bg-[${i.colour.trim()}]`}></div>
+                          <div className={`w-4 h-4 bg-[${i.colour}]`}></div>
                         </FeaturedCompanyDetailDiv>
                       ))}
                     </div>
