@@ -4,6 +4,7 @@ const initialState = {
   isAreaSideNavOpen: false,
   areaCountry: "",
   areaMiningArea: "",
+  syncPropertyFeatures: [],
 };
 
 const areaMapSlice = createSlice({
@@ -19,10 +20,17 @@ const areaMapSlice = createSlice({
     setAreaMiningArea: (state, action) => {
       state.areaMiningArea = action.payload;
     },
+    setSyncPropertyFeatures: (state, action) => {
+      state.syncPropertyFeatures = action.payload;
+    },
   },
 });
 
-export const { setAreaCountry, setAreaMiningArea, setIsAreaSideNavOpen } =
-  areaMapSlice.actions;
+export const {
+  setAreaCountry,
+  setAreaMiningArea,
+  setIsAreaSideNavOpen,
+  setSyncPropertyFeatures,
+} = areaMapSlice.actions;
 
 export default areaMapSlice.reducer;

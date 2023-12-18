@@ -21,7 +21,7 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { MdLocationOn } from "react-icons/md";
 import AreaFilter from "../filter-popups/area-filters";
-import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
+import { setIsAreaSideNavOpen, setSyncPropertyFeatures } from "../../../store/area-map/area-map-slice";
 import TreeView from "../common-comp/treeview";
 import Accordion from "../common-comp/accordion";
 import AccordionItemWithEye from "../common-comp/accordion-eye";
@@ -62,26 +62,15 @@ const AreaSideNavbar = () => {
   );
 
   const areaName = useSelector((state) => state.areaMapReducer.areaMiningArea);
+  const syncPropertyFeatures = useSelector(
+    (state) => state.areaMapReducer.syncPropertyFeatures
+  );
 
   const [featuredCompanies, setFeaturedCompanies] = useState([]);
   //areal load
   useEffect(() => {
-    const f = async () => {
-      const res = await fetch(
-        `http://44.208.84.139/miniatlas/hotplayowenersview/${areaName}`,
-        { cache: "no-store" }
-      );
-      const d = await res.json();
-      // console.log("fps", d);
-      console.log("fps", d.data);
-
-      setFeaturedCompanies(d.data);
-      // d.data[0].json_build_object.features.map((i) =>
-      //   console.log("i", i.properties.colour)
-      // );
-    };
-
-    f().catch(console.error);
+    getFeaturedCompanyDetails();
+    getSyncProperties();
   }, [areaName]);
 
   const treeData = [
@@ -130,6 +119,56 @@ const AreaSideNavbar = () => {
     dispatch(setIsAreaSideNavOpen(false));
   };
 
+  const getFeaturedCompanyDetails = async () => {
+    const f = async () => {
+      const res = await fetch(
+        `http://44.208.84.139/miniatlas/hotplayowenersview/${areaName}`,
+        { cache: "no-store" }
+      );
+      const d = await res.json();
+      // console.log("fps", d);
+      console.log("fps", d.data);
+
+      setFeaturedCompanies(d.data);
+      // d.data[0].json_build_object.features.map((i) =>
+      //   console.log("i", i.properties.colour)
+      // );
+    };
+
+    f().catch(console.error);
+  };
+
+  const getSyncProperties = async () => {
+    const f = async () => {
+      const res = await fetch(
+        `http://44.208.84.139/miniatlas/tbl_sync_property_area/${areaName}`,
+        { cache: "no-store" }
+      );
+      const d = await res.json();
+      // console.log("fps", d);
+      console.log("fps", d.data);
+
+      // setFeaturedCompanies(d.data);
+      // d.data[0].json_build_object.features.map((i) =>
+      //   console.log("i", i.properties.colour)
+      // ); setSyncPropertyFeatures
+
+      const gj = {
+        type: "FeatureCollection",
+        crs: {
+          type: "name",
+          properties: {
+            name: "EPSG:3857",
+          },
+        },
+        features: d.data[0].json_build_object.features,
+      };
+      dispatch(setSyncPropertyFeatures(gj));
+      console.log("gj", gj);
+    };
+    f().catch(console.error);
+  };
+
   return (
     <section className="flex gap-6">
       <div className={`duration-500 flex w-auto`}>
@@ -169,13 +208,22 @@ const AreaSideNavbar = () => {
                       {featuredCompanies.map((i) => (
                         <FeaturedCompanyDetailDiv
                           key={i.colour}
-                          title={i.colour}
-                          onClick={() => console.log(`bg-[${i.colour}]`)}
+                          title={i.company2}
+                          onClick={() => console.log(featuredCompanies)}
                         >
-                          <div className={`w-4 h-4 bg-[${i.colour}]`}></div>
+                          <div
+                            className={`w-4 h-4`}
+                            style={{ backgroundColor: `${i.colour}` }}
+                          ></div>
                         </FeaturedCompanyDetailDiv>
                       ))}
                     </div>
+                  </AccordionItemWithEye>
+                  <AccordionItemWithEye title="All Companies">
+                    <TreeView data={treeData} />
+                  </AccordionItemWithEye>
+                  <AccordionItemWithEye title="All Companies">
+                    {JSON.stringify(syncPropertyFeatures)}
                   </AccordionItemWithEye>
                 </div>
               </Accordion>
