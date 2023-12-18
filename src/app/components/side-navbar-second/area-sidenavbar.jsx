@@ -37,6 +37,8 @@ const AreaSideNavbar = () => {
       pathname = pathname.substring(0, r);
     }
   }
+
+ 
   const [isSecondSideOpen, setIsSecondSideOpen] = useState(false);
 
   const isSideNavOpen = useSelector(
@@ -55,6 +57,27 @@ const AreaSideNavbar = () => {
   const areaInitialCenter = useSelector(
     (state) => state.mapSelectorReducer.areaInitialCenter
   );
+
+    const areaName = useSelector(
+    (state) => state.areaMapReducer.areaMiningArea
+  );
+
+   //areal load
+  useEffect(() => {
+    const f =async  () => {
+                const res = await fetch(`http://44.208.84.139/miniatlas/view_hotplay_table_with_sponsor/${areaName}`, { cache: 'force-cache' })
+                const d = await  res.json() 
+                console.log("fps",d )
+                console.log("fps",d.data[0].json_build_object)
+                 
+        } 
+
+     f().catch(console.error);
+
+
+   
+  }, [areaName]);
+
 
   const treeData = [
     {

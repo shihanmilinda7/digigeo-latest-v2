@@ -3,7 +3,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 const initialState = {
   isAreaSideNavOpen: false,
   areaCountry: "",
-  areaState: "",
+  areaMiningArea: "",
 };
 
 const areaMapSlice = createSlice({
@@ -16,13 +16,13 @@ const areaMapSlice = createSlice({
     setAreaCountry: (state, action) => {
       state.areaCountry = action.payload;
     },
-    setAreaState: (state, action) => {
-      state.areaState = action.payload;
+    setAreaMiningArea: (state, action) => {
+      state.areaMiningArea = action.payload;
     },
   },
 });
 
-export const { setAreaCountry, setAreaState, setIsAreaSideNavOpen } =
+export const { setAreaCountry, setAreaMiningArea, setIsAreaSideNavOpen } =
   areaMapSlice.actions;
 
 export default areaMapSlice.reducer;

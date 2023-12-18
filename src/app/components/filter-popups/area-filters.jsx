@@ -10,7 +10,7 @@ import NextTextInputField from "../common-comp/next-text-input-fields";
 import { useDispatch, useSelector } from "react-redux";
 import {
   setAreaCountry,
-  setAreaState,
+  setAreaMiningArea,
   setIsAreaSideNavOpen,
 } from "../../../store/area-map/area-map-slice";
 
@@ -38,8 +38,8 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   const isSideNavOpen = useSelector(
     (state) => state.mapSelectorReducer.isSideNavOpen
   );
-  const areaCountry = "Test";
-  const areaState = "Test";
+  // const areaCountry = "Test";
+  // const areaState = "Test";
 
   const customStyles = {
     overlay: {
@@ -64,7 +64,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   //areal load
   useEffect(() => {
     const f =async  () => {
-                const res = await fetch(`https://44.208.84.139/miniatlas/areas/${country}`, { cache: 'force-cache' })
+                const res = await fetch(`http://44.208.84.139/miniatlas/areas/${country}`, { cache: 'force-cache' })
                 const d = await  res.json() 
                 console.log("areas",d.data)
                   setAreaList(d.data)
@@ -77,12 +77,12 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   }, [country]);
 
   const searchAction = async () => {
-    if (areaCountry && areaState) {
+    if (country && miningArea) {
       const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=true&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
       window.history.replaceState({}, "", newUrl);
       dispatch(setIsAreaSideNavOpen(true));
-      dispatch(setAreaCountry(areaCountry));
-      dispatch(setAreaState(areaState));
+      dispatch(setAreaCountry(country));
+      dispatch(setAreaMiningArea(miningArea));
       closePopup();
     }
     // dispatch(setAreaState("Canada"));
@@ -93,7 +93,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   useEffect(  () => {
     
     const f =async  () => {
-            const res = await fetch(`https://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
+            const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, { cache: 'force-cache' })
             const d = await  res.json() 
             console.log("w2",d.data)
               setCountryList(d.data)
@@ -133,7 +133,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                   </span>
                   <div className="flex gap-2">
                     <Autocomplete label="Select a country" className="max-w-xs" onInputChange={(e) => {
-                      console.log("pppp", e)
+                   
                     setCountry(e)
                   
                   }}>
@@ -149,7 +149,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     </Autocomplete>
 
                      <Autocomplete label="Select a mining area" className="max-w-xs" onInputChange={(e) => {
-                      console.log("sss", e)
+                     setMiningArea(e)
                   }}>
                       {areaList.map((areaObj) => (
                         <AutocompleteItem
