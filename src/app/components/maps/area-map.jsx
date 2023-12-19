@@ -120,6 +120,11 @@ export const AreaMap = () => {
   }, []);
 
   useEffect(() => {
+    console.log("syncPropertyFeatures", syncPropertyFeatures);
+    setSyncPropertyFeatures1(syncPropertyFeatures);
+  }, [syncPropertyFeatures]);
+
+  useEffect(() => {
     let newUrl;
     if (areaName == "") {
       newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${mapLyrs}&z=${zoom}&c=${center}`;
