@@ -33,6 +33,8 @@ export const AreaMap = () => {
   const router = useRouter();
   const [center, setCenter] = useState("");
   const [zoom, setZoom] = useState("");
+  const [syncPropFeaturesLocal, setsyncPropFeaturesLocal] = useState();
+  const [syncPropertySourceFeaatures, setsyncPropertySourceFeaatures] = useState();
   // const searchParams = useSearchParams();
   // const mapLyrs = searchParams.get("lyrs");
 
@@ -71,18 +73,47 @@ export const AreaMap = () => {
   const areaZoomMode = useSelector(
     (state) => state.areaMapReducer.areaZoomMode
   );
-
+  
   useEffect(() => {
-    console.log("ssssssssss")
+    //  syncPropSourceRef?.current?.clear()
+    setsyncPropFeaturesLocal( syncPropertyFeatures )
     // if (areaZoomMode == "extent") {
     if (syncPropSourceRef.current) {
-      mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
-        padding: [200, 200, 200, 200],
-        duration: 3000,
-      });
+      console.log("s4")
+     
+    //syncPropSourceRef.current.clear()
+      // mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
+      //   padding: [200, 200, 200, 200],
+      //   duration: 3000,
+      // });
     }
     // }
   }, [syncPropertyFeatures]);
+ 
+
+   useEffect(() => {
+     console.log("ppp", syncPropFeaturesLocal);
+     if (syncPropFeaturesLocal) {
+       syncPropSourceRef?.current?.clear()
+       const e = new GeoJSON().readFeatures(syncPropFeaturesLocal)
+       
+       syncPropSourceRef?.current?.addFeatures(e);
+
+       console.log("e12",e)
+       setsyncPropertySourceFeaatures(e);
+     }
+     if (syncPropSourceRef.current) {
+       const p1= syncPropSourceRef.current?.getExtent()[0]
+       if (p1 != Infinity) {
+         mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
+           padding: [200, 200, 200, 200],
+           duration: 3000,
+         });
+       }
+      //syncPropSourceRef?.current?.refresh()
+     }
+     
+  }, [syncPropFeaturesLocal]);
 
   useEffect(() => {
     mouseScrollEvent();
@@ -298,10 +329,10 @@ export const AreaMap = () => {
             ref={syncPropVectorLayerRef}
             style={styleFunctionSyncProperties}
           >
-            {syncPropertyFeatures && (
+            {syncPropertySourceFeaatures  && (
               <olSourceVector
                 ref={syncPropSourceRef}
-                features={new GeoJSON().readFeatures(syncPropertyFeatures)}
+                features={syncPropertySourceFeaatures}
               >
                 {/* <olFeature>
                 <olGeomCircle center={[5e6, 7e6]} radius={1e6} />
