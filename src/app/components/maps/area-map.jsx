@@ -23,6 +23,68 @@ import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
 import GeoJSON from "ol/format/GeoJSON";
 
 import { Circle as CircleStyle, Fill, Stroke, Style, Icon } from "ol/style";
+import { getBottomLeft, getCenter, getWidth } from "ol/extent";
+import { getHeight } from "ol/extent";
+import { toContext } from "ol/render";
+import { areaMapAssetVectorLayerStyleFunction } from "./asset-styles";
+
+
+const fill = new Fill();
+const stroke = new Stroke({
+  color: "rgba(0,0,0,0.8)",
+  width: 2,
+});
+
+   const areaMApPropertyVectorRendererFuncV2 = (
+  pixelCoordinates,
+  state
+) => {
+   console.log("sssss", state);
+  const context = state.context;
+  const geometry = state.geometry.clone();
+  geometry.setCoordinates(pixelCoordinates);
+  const extent = geometry.getExtent();
+  const width = getWidth(extent);
+     const height = getHeight(extent);
+     //new code
+ const svgtext2 = state.feature.get("hatch");
+    const img = new Image();
+
+    // img.onload = function () {
+    //   feature.set("flag", img);
+    // };
+    
+    img.src = "data:image/svg+xml;utf8," + encodeURIComponent(svgtext2);
+
+     //end new code
+    //  const flag = state.feature.get("flag");
+    const flag = img
+     console.log("flag",flag)
+  if (!flag || height < 1 || width < 1) {
+    return;
+  }
+ 
+  context.save();
+  const renderContext = toContext(context, {
+    pixelRatio: 1,
+  });
+
+  renderContext.setFillStrokeStyle(fill, stroke);
+  renderContext.drawGeometry(geometry);
+
+  context.clip();
+
+  // Fill transparent country with the flag image
+  const bottomLeft = getBottomLeft(extent);
+  const left = bottomLeft[0];
+  const bottom = bottomLeft[1];
+  const hf = width / (height * 8);
+  context.drawImage(flag,  left, bottom, width *20, height*hf*20);
+ 
+ 
+
+  context.restore();
+};
 
 export const AreaMap = () => {
   let pathname = "";
@@ -33,12 +95,7 @@ export const AreaMap = () => {
   const router = useRouter();
   const [center, setCenter] = useState("");
   const [zoom, setZoom] = useState("");
-  const [syncPropFeaturesLocal, setsyncPropFeaturesLocal] = useState();
-  const [syncPropertySourceFeaatures, setsyncPropertySourceFeaatures] = useState();
-  // const searchParams = useSearchParams();
-  // const mapLyrs = searchParams.get("lyrs");
-
-  // console.log("pathname", pathname);
+ 
   const mapRef = useRef();
   const dispatch = useDispatch();
 
@@ -62,9 +119,19 @@ export const AreaMap = () => {
 
   const syncPropSourceRef = useRef(null);
   const syncPropVectorLayerRef = useRef(null);
+  const fPropSourceRef = useRef(null);
+  const fPropVectorLayerRef = useRef(null);
+  const assetSourceRef = useRef(null);
+  const assetLayerRef = useRef(null);
 
   const syncPropertyFeatures = useSelector(
     (state) => state.areaMapReducer.syncPropertyFeatures
+  );
+  const featuredPropertyFeatures = useSelector(
+    (state) => state.areaMapReducer.featuredPropertyFeatures
+  );
+  const assetFeatures = useSelector(
+    (state) => state.areaMapReducer.assetFeatures
   );
 
   const areaName = useSelector((state) => state.areaMapReducer.areaMiningArea);
@@ -73,35 +140,27 @@ export const AreaMap = () => {
   const areaZoomMode = useSelector(
     (state) => state.areaMapReducer.areaZoomMode
   );
+
+    useEffect(()=>{
+     console.log("ue2")
+      //set style
+    const style = new Style({});
+  style.setRenderer(areaMApPropertyVectorRendererFuncV2);
+
+    fPropVectorLayerRef.current?.setStyle(style);
+    }, [fPropVectorLayerRef.current])
+  
   
   useEffect(() => {
-    //  syncPropSourceRef?.current?.clear()
-    setsyncPropFeaturesLocal( syncPropertyFeatures )
-    // if (areaZoomMode == "extent") {
-    if (syncPropSourceRef.current) {
-      console.log("s4")
-     
-    //syncPropSourceRef.current.clear()
-      // mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
-      //   padding: [200, 200, 200, 200],
-      //   duration: 3000,
-      // });
-    }
-    // }
-  }, [syncPropertyFeatures]);
- 
-
-   useEffect(() => {
-     console.log("ppp", syncPropFeaturesLocal);
-     if (syncPropFeaturesLocal) {
-       syncPropSourceRef?.current?.clear()
-       const e = new GeoJSON().readFeatures(syncPropFeaturesLocal)
+      
+    if (syncPropertyFeatures) {
+      syncPropSourceRef?.current?.clear()
+      const e = new GeoJSON().readFeatures(syncPropertyFeatures)
        
-       syncPropSourceRef?.current?.addFeatures(e);
-
-       console.log("e12",e)
-       setsyncPropertySourceFeaatures(e);
-     }
+      syncPropSourceRef?.current?.addFeatures(e);
+    }
+        
+     
      if (syncPropSourceRef.current) {
        const p1= syncPropSourceRef.current?.getExtent()[0]
        if (p1 != Infinity) {
@@ -110,19 +169,60 @@ export const AreaMap = () => {
            duration: 3000,
          });
        }
-      //syncPropSourceRef?.current?.refresh()
+       
      }
+  }, [syncPropertyFeatures]);
+ 
+  useEffect(() => {
+      
+    if (featuredPropertyFeatures) {
+      fPropSourceRef?.current?.clear()
+      const e = new GeoJSON().readFeatures(featuredPropertyFeatures)
+       
+      fPropSourceRef?.current?.addFeatures(e);
+    }
+        
      
-  }, [syncPropFeaturesLocal]);
+     if (fPropSourceRef.current) {
+       const p1= fPropSourceRef.current?.getExtent()[0]
+       if (p1 != Infinity) {
+         mapRef.current?.getView()?.fit(fPropSourceRef.current?.getExtent(), {
+           padding: [200, 200, 200, 200],
+           duration: 3000,
+         });
+       }
+       
+     }
+  }, [featuredPropertyFeatures]);
+   
+  useEffect(() => {
+      console.log("assetFeatures",assetFeatures,)
+    if (assetFeatures?.features) {
+      assetSourceRef?.current?.clear()
+      const e = new GeoJSON().readFeatures(assetFeatures)
+       
+      assetSourceRef?.current?.addFeatures(e);
+    }
+        
+     
+     if (assetSourceRef.current) {
+       const p1= assetSourceRef.current?.getExtent()[0]
+       if (p1 != Infinity) {
+         mapRef.current?.getView()?.fit(assetSourceRef.current?.getExtent(), {
+           padding: [200, 200, 200, 200],
+           duration: 3000,
+         });
+       }
+       
+     }
+  }, [assetFeatures]);
+   
 
   useEffect(() => {
     mouseScrollEvent();
   }, []);
 
-  useEffect(() => {
-    console.log("syncPropertyFeatures", syncPropertyFeatures);
-    setSyncPropertyFeatures1(syncPropertyFeatures);
-  }, [syncPropertyFeatures]);
+ 
 
   useEffect(() => {
     let newUrl;
@@ -160,26 +260,7 @@ export const AreaMap = () => {
       map?.un("moveend", handleMoveEnd);
     };
   }, []);
-  // const mouseScrollEvent = useCallback() => {
-  //   const map = mapRef.current;
-
-  //   // console.log("mapRef", mapRef.current?.getZoom());
-  //   const handleMoveEnd = () => {
-  //     const tmpZoomLevel = map.getView().getZoom();
-  //     const tmpinitialCenter = map.getView().getCenter();
-  //     dispatch(setAreaZoomLevel(tmpZoomLevel));
-  //     dispatch(setAreaInitialCenter(tmpinitialCenter));
-  //     // console.log("Current Zoom Level:", tmpinitialCenter);
-  //     // console.log("Current Zoom Level:", tmpZoomLevel);
-  //     // You can perform actions with the zoom level here
-  //   };
-
-  //   map?.on("moveend", handleMoveEnd);
-
-  //   return () => {
-  //     map?.un("moveend", handleMoveEnd);
-  //   };
-  // };
+  
 
   const collapsibleBtnHandler = () => {
     const tmpValue = String(isSideNavOpen).toLowerCase() === "true";
@@ -203,10 +284,7 @@ export const AreaMap = () => {
     dispatch(setIsAreaSideNavOpen(true));
   };
 
-  //    const image = new CircleStyle({
-  //   radius: 5,
-  //   stroke: new Stroke({ color: "red", width: 1 }),
-  // });
+ 
 
   const image = new Icon({
     src: "./sync-prop.svg",
@@ -329,15 +407,44 @@ export const AreaMap = () => {
               }}
             ></olSourceXYZ>
           </olLayerTile>
-
+            <olLayerVector
+            ref={fPropVectorLayerRef}
+            
+            >
+            {featuredPropertyFeatures  && (
+              <olSourceVector
+                ref={fPropSourceRef}
+                // features={syncPropertyFeatures}
+              >
+                {/* <olFeature>
+                <olGeomCircle center={[5e6, 7e6]} radius={1e6} />
+              </olFeature> */}
+              </olSourceVector>
+            )}
+          </olLayerVector>
           <olLayerVector
             ref={syncPropVectorLayerRef}
             style={styleFunctionSyncProperties}
           >
-            {syncPropertySourceFeaatures  && (
+            {syncPropertyFeatures  && (
               <olSourceVector
                 ref={syncPropSourceRef}
-                features={syncPropertySourceFeaatures}
+                // features={syncPropertyFeatures}
+              >
+                {/* <olFeature>
+                <olGeomCircle center={[5e6, 7e6]} radius={1e6} />
+              </olFeature> */}
+              </olSourceVector>
+            )}
+          </olLayerVector>
+            <olLayerVector
+            ref={assetLayerRef}
+            style={areaMapAssetVectorLayerStyleFunction}
+          >
+            {assetFeatures  && (
+              <olSourceVector
+                ref={assetSourceRef}
+                // features={syncPropertyFeatures}
               >
                 {/* <olFeature>
                 <olGeomCircle center={[5e6, 7e6]} radius={1e6} />

@@ -22,6 +22,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { MdLocationOn } from "react-icons/md";
 import AreaFilter from "../filter-popups/area-filters";
 import {
+  setAssetFeatures,
+  setFPropertyFeatures,
   setIsAreaSideNavOpen,
   setSyncPropertyFeatures,
 } from "../../../store/area-map/area-map-slice";
@@ -76,6 +78,8 @@ const AreaSideNavbar = () => {
   useEffect(() => {
     getFeaturedCompanyDetails();
     getSyncProperties();
+    getFeaturedCompanyGeometry();
+    getAssets();
   }, [areaName]);
 
   const closeSecondNavBar = () => {
@@ -99,6 +103,37 @@ const AreaSideNavbar = () => {
       // d.data[0].json_build_object.features.map((i) =>
       //   console.log("i", i.properties.colour)
       // );
+    };
+
+    f().catch(console.error);
+  };
+
+    const getFeaturedCompanyGeometry = async () => {
+    const f = async () => {
+      const res = await fetch(
+        `http://44.208.84.139/miniatlas/view_hotplay_table_with_sponsor/${areaName}`,
+        { cache: "no-store" }
+      );
+     const d = await res.json();
+      // console.log("fps", d);
+      console.log("fps-geom", d.data);
+
+      // setFeaturedCompanies(d.data);
+      // d.data[0].json_build_object.features.map((i) =>
+      //   console.log("i", i.properties.colour)
+      // ); setSyncPropertyFeatures
+
+      const gj = {
+        type: "FeatureCollection",
+        crs: {
+          type: "name",
+          properties: {
+            name: "EPSG:3857",
+          },
+        },
+        features: d.data[0].json_build_object.features,
+      };
+      dispatch(setFPropertyFeatures(gj));
     };
 
     f().catch(console.error);
@@ -131,6 +166,36 @@ const AreaSideNavbar = () => {
       };
       dispatch(setSyncPropertyFeatures(gj));
       console.log("gj", gj);
+    };
+    f().catch(console.error);
+  };
+  const getAssets = async () => {
+    const f = async () => {
+      const res = await fetch(
+        `http://44.208.84.139/miniatlas/view_sync_assets_linked_owner_amap/${areaName}`,
+        { cache: "no-store" }
+      );
+      const d = await res.json();
+      // console.log("fps", d);
+      console.log("assets", d.data);
+
+      // setFeaturedCompanies(d.data);
+      // d.data[0].json_build_object.features.map((i) =>
+      //   console.log("i", i.properties.colour)
+      // ); setSyncPropertyFeatures
+
+      const gj = {
+        type: "FeatureCollection",
+        crs: {
+          type: "name",
+          properties: {
+            name: "EPSG:3857",
+          },
+        },
+        features: d.data[0].json_build_object.features,
+      };
+      dispatch(setAssetFeatures(gj));
+      //console.log("gj", gj);
     };
     f().catch(console.error);
   };
