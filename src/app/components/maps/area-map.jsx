@@ -73,6 +73,7 @@ export const AreaMap = () => {
   );
 
   useEffect(() => {
+    console.log("ssssssssss")
     // if (areaZoomMode == "extent") {
     if (syncPropSourceRef.current) {
       mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {

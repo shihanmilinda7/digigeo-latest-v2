@@ -44,6 +44,9 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   // const areaCountry = "Test";
   // const areaState = "Test";
 
+  const areaName = useSelector((state) => state.areaMapReducer.areaMiningArea);
+  const areaCountry = useSelector((state) => state.areaMapReducer.areaCountry);
+
   const customStyles = {
     overlay: {
       backgroundColor: "rgba(0, 0, 0, 0.6)",
@@ -64,6 +67,11 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   useEffect(() => {
     setIsOpen(isOpenIn);
   }, [isOpenIn]);
+
+  useEffect(() => {
+    setCountry(areaCountry);
+    setMiningArea(areaName);
+  }, [areaName, areaCountry]);
   //areal load
   useEffect(() => {
     const f = async () => {
@@ -141,7 +149,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                       onInputChange={(e) => {
                         setCountry(e);
                       }}
-                      // selectedKey={country}
+                      defaultSelectedKey={country}
                     >
                       {countryList.map((countryObj) => (
                         <AutocompleteItem
@@ -156,7 +164,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     <Autocomplete
                       label="Select a mining area"
                       className="max-w-xs"
-                      // selectedKey={miningArea}
+                      defaultSelectedKey={miningArea}
                       onInputChange={(e) => {
                         setMiningArea(e);
                       }}
