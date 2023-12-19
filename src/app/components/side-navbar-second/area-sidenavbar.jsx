@@ -26,6 +26,7 @@ import TreeView from "../common-comp/treeview";
 import Accordion from "../common-comp/accordion";
 import AccordionItemWithEye from "../common-comp/accordion-eye";
 import FeaturedCompanyDetailDiv from "../common-comp/featured-company-detail-div";
+import AreaTreeView from "./area-tree-view";
 
 const AreaSideNavbar = () => {
   let pathname = "";
@@ -43,6 +44,7 @@ const AreaSideNavbar = () => {
   }
 
   const [isSecondSideOpen, setIsSecondSideOpen] = useState(false);
+  const [treeViewData, settreeViewData] = useState();
 
   const isSideNavOpen = useSelector(
     (state) => state.mapSelectorReducer.isSideNavOpen
@@ -73,44 +75,7 @@ const AreaSideNavbar = () => {
     getSyncProperties();
   }, [areaName]);
 
-  const treeData = [
-    {
-      label: "Node 1",
-      children: [
-        {
-          label: "Node 1.1",
-          children: [
-            {
-              label: "Node 1.1.1",
-              children: [
-                {
-                  label: "Node 1.1.1.1",
-                  children: [],
-                },
-              ],
-            },
-            {
-              label: "Node 1.1.2",
-              children: [],
-            },
-          ],
-        },
-        {
-          label: "Node 1.2",
-          children: [],
-        },
-      ],
-    },
-    {
-      label: "Node 2",
-      children: [
-        {
-          label: "Node 2.1",
-          children: [],
-        },
-      ],
-    },
-  ];
+
 
   const closeSecondNavBar = () => {
     // setIsSecondSideOpen(false);
@@ -165,9 +130,13 @@ const AreaSideNavbar = () => {
       };
       dispatch(setSyncPropertyFeatures(gj));
       console.log("gj", gj);
+
+      
     };
     f().catch(console.error);
   };
+
+ 
 
   return (
     <section className="flex gap-6">
@@ -220,7 +189,7 @@ const AreaSideNavbar = () => {
                     </div>
                   </AccordionItemWithEye>
                   <AccordionItemWithEye title="All Companies">
-                    <TreeView data={treeData} />
+                    <AreaTreeView syncPropFeatues={syncPropertyFeatures} />
                   </AccordionItemWithEye>
                   {/* <AccordionItemWithEye title="All Companies">
                     {JSON.stringify(syncPropertyFeatures)}

@@ -13,11 +13,11 @@ const TreeNode = ({ node }) => {
 
   return (
     <div>
-      <div onClick={handleToggle}>
+      {/* <div onClick={handleToggle}>
        
          {hasChildren && <span>{isOpen ? "[-]" : "[+]"}</span>}
         
-        {node.label}</div>
+        {node.label}</div> */}
        
       {isOpen && hasChildren && (
         <div style={{ marginLeft: "20px" }}>
