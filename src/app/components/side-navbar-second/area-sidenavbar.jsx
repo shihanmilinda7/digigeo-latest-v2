@@ -130,7 +130,7 @@ const AreaSideNavbar = () => {
       };
       dispatch(setSyncPropertyFeatures(gj));
       console.log("gj", gj);
-
+      
       
     };
     f().catch(console.error);

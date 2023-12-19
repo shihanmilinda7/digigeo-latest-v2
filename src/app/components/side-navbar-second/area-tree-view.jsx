@@ -2,6 +2,8 @@
 
 import React, { useEffect, useState } from 'react'
 import TreeView from '../common-comp/treeview'
+import { AreaCompanyNode } from './area-company-treenode';
+import AreaPropertyNode from './area-peoperty-tree-node';
 
 const AreaTreeView = ({ syncPropFeatues }) => {
 
@@ -36,57 +38,57 @@ const AreaTreeView = ({ syncPropFeatues }) => {
             }],
     };
     nodes.push(newcompanyNode);
-    return newcompanyNode;
+ 
   }
 };
    const buildTreeViewData = (syncPropFeatues)=>{
-     console.log("popss")
+      
        const nodes = [];
        syncPropFeatues?.features?.map(f => { 
            addNode(nodes,f.properties.name,f.properties.prop_name,f.properties.coordinates,)
-           console.log("pop", f)
+            
        })
 
-      const treeData = [
-    {
-      label: "Node 1",
-      children: [
-        {
-          label: "Node 1.1",
-          children: [
-            {
-              label: "Node 1.1.1",
-              children: [
-                {
-                  label: "Node 1.1.1.1",
-                  children: [],
-                },
-              ],
-            },
-            {
-              label: "Node 1.1.2",
-              children: [],
-            },
-          ],
-        },
-        {
-          label: "Node 1.2",
-          children: [],
-        },
-      ],
-    },
-    {
-      label: "Node 2",
-      children: [
-        {
-          label: "Node 2.1",
-          children: [],
-        },
-      ],
-    },
-  ];
+  //     const treeData = [
+  //   {
+  //     label: "Node 1",
+  //     children: [
+  //       {
+  //         label: "Node 1.1",
+  //         children: [
+  //           {
+  //             label: "Node 1.1.1",
+  //             children: [
+  //               {
+  //                 label: "Node 1.1.1.1",
+  //                 children: [],
+  //               },
+  //             ],
+  //           },
+  //           {
+  //             label: "Node 1.1.2",
+  //             children: [],
+  //           },
+  //         ],
+  //       },
+  //       {
+  //         label: "Node 1.2",
+  //         children: [],
+  //       },
+  //     ],
+  //   },
+  //   {
+  //     label: "Node 2",
+  //     children: [
+  //       {
+  //         label: "Node 2.1",
+  //         children: [],
+  //       },
+  //     ],
+  //   },
+  // ];
     setTreeViewData(nodes)
-    return {}
+    
   }
   return (
       // <TreeView data={treeViewData} />
@@ -94,7 +96,7 @@ const AreaTreeView = ({ syncPropFeatues }) => {
        <div>
           {treeViewData?.map((node) => (
           
-           node.nodetype == "company" ? <TreeNode key={node.label} node={node} /> :
+            <AreaCompanyNode key={node.label}  comapanyName={node.label}   propertyNodes={node.children} />  
       ))}
     </div>
   )

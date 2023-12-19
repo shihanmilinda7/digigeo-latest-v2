@@ -4,7 +4,7 @@ const initialState = {
   isAreaSideNavOpen: false,
   areaCountry: "",
   areaMiningArea: "",
-  syncPropertyFeatures: [],
+  syncPropertyFeatures: undefined,
 };
 
 const areaMapSlice = createSlice({

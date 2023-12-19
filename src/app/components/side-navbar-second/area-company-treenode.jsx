@@ -2,10 +2,11 @@
 
 import Image from "next/image";
 import React, { useState } from "react";
+import AreaPropertyNode from "./area-peoperty-tree-node";
 
-export const AreaCompanyNode = ({ node }) => {
+export const AreaCompanyNode = ({comapanyName, propertyNodes }) => {
   const [isOpen, setIsOpen] = useState(false);
-  const hasChildren = node.children && node.children.length > 0;
+ // const hasChildren = node.children && node.children.length > 0;
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -13,19 +14,20 @@ export const AreaCompanyNode = ({ node }) => {
 
   return (
     <div>
-      <div onClick={handleToggle}>
+      <div onClick={handleToggle} className="flex hover:bg-slate-200 cursor-pointer" >
        
-         {hasChildren && <span>{isOpen ? "[-]" : "[+]"}</span>}
-        
-        {node.label}</div>
+         {<span>{isOpen ? "-" : "+"}</span>}
+
+        {comapanyName}</div>
+      
        
-      {/* {isOpen && hasChildren && (
+      {isOpen  && (
         <div style={{ marginLeft: "20px" }}>
-          {node.children.map((child) => (
-            <TreeNode key={child.label} node={child} />
+          { propertyNodes.map((child) => (
+            <AreaPropertyNode key={child.label} propertyName={child.label}  />
           ))}
         </div>
-      )} */}
+      )}
     </div>
   );
 };
