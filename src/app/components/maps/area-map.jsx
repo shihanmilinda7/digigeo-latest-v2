@@ -73,14 +73,14 @@ export const AreaMap = () => {
   );
 
   useEffect(() => {
-    if (areaZoomMode == "extent") {
-      if (syncPropSourceRef.current) {
-        mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
-          padding: [200, 200, 200, 200],
-          duration: 3000,
-        });
-      }
+    // if (areaZoomMode == "extent") {
+    if (syncPropSourceRef.current) {
+      mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
+        padding: [200, 200, 200, 200],
+        duration: 3000,
+      });
     }
+    // }
   }, [syncPropertyFeatures]);
 
   useEffect(() => {

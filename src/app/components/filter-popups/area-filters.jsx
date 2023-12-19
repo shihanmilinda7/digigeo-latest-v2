@@ -21,10 +21,12 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [country, setCountry] = useState("Canada");
+  const [country, setCountry] = useState("");
+  // const [country, setCountry] = useState("Canada");
   const [countryList, setCountryList] = useState([]);
   const [areaList, setAreaList] = useState([]);
-  const [miningArea, setMiningArea] = useState("Timmins");
+  const [miningArea, setMiningArea] = useState("");
+  // const [miningArea, setMiningArea] = useState("Timmins");
 
   const selectedMap = useSelector(
     (state) => state.mapSelectorReducer.selectedMap
@@ -79,6 +81,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
 
   const searchAction = async () => {
     if (country && miningArea) {
+      dispatch(setAreaZoomMode("extent"));
       const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=true&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}&co=${country}&ma=${miningArea}`;
       window.history.replaceState({}, "", newUrl);
       dispatch(setIsAreaSideNavOpen(true));
@@ -86,7 +89,6 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
       // dispatch(setAreaMiningArea("Timmins"));
       dispatch(setAreaCountry(country));
       dispatch(setAreaMiningArea(miningArea));
-      dispatch(setAreaZoomMode("extent"));
       closePopup();
     }
     // dispatch(setAreaState("Canada"));
@@ -139,7 +141,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                       onInputChange={(e) => {
                         setCountry(e);
                       }}
-                      selectedKey={country}
+                      // selectedKey={country}
                     >
                       {countryList.map((countryObj) => (
                         <AutocompleteItem
@@ -154,7 +156,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
                     <Autocomplete
                       label="Select a mining area"
                       className="max-w-xs"
-                      selectedKey={miningArea}
+                      // selectedKey={miningArea}
                       onInputChange={(e) => {
                         setMiningArea(e);
                       }}
