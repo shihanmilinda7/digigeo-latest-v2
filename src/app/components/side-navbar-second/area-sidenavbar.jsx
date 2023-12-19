@@ -21,12 +21,15 @@ import {
 import { useRouter, useSearchParams } from "next/navigation";
 import { MdLocationOn } from "react-icons/md";
 import AreaFilter from "../filter-popups/area-filters";
-import { setIsAreaSideNavOpen, setSyncPropertyFeatures } from "../../../store/area-map/area-map-slice";
+import {
+  setIsAreaSideNavOpen,
+  setSyncPropertyFeatures,
+} from "../../../store/area-map/area-map-slice";
 import TreeView from "../common-comp/treeview";
 import Accordion from "../common-comp/accordion";
 import AccordionItemWithEye from "../common-comp/accordion-eye";
-import FeaturedCompanyDetailDiv from "../common-comp/featured-company-detail-div";
 import AreaTreeView from "./area-tree-view";
+import FeaturedCompanyDetailDiv from "./featured-company-detail-div";
 
 const AreaSideNavbar = () => {
   let pathname = "";
@@ -74,8 +77,6 @@ const AreaSideNavbar = () => {
     getFeaturedCompanyDetails();
     getSyncProperties();
   }, [areaName]);
-
-
 
   const closeSecondNavBar = () => {
     // setIsSecondSideOpen(false);
@@ -130,13 +131,9 @@ const AreaSideNavbar = () => {
       };
       dispatch(setSyncPropertyFeatures(gj));
       console.log("gj", gj);
-      
-      
     };
     f().catch(console.error);
   };
-
- 
 
   return (
     <section className="flex gap-6">
@@ -178,7 +175,7 @@ const AreaSideNavbar = () => {
                         <FeaturedCompanyDetailDiv
                           key={i.colour}
                           title={i.company2}
-                          onClick={() => console.log(featuredCompanies)}
+                          // onClick={() => console.log(featuredCompanies)}
                         >
                           <div
                             className={`w-4 h-4`}
@@ -189,7 +186,9 @@ const AreaSideNavbar = () => {
                     </div>
                   </AccordionItemWithEye>
                   <AccordionItemWithEye title="All Companies">
-                    <AreaTreeView syncPropFeatues={syncPropertyFeatures} />
+                    <div className="overflow-y-auto max-h-[25vh]">
+                      <AreaTreeView syncPropFeatues={syncPropertyFeatures} />
+                    </div>
                   </AccordionItemWithEye>
                   {/* <AccordionItemWithEye title="All Companies">
                     {JSON.stringify(syncPropertyFeatures)}

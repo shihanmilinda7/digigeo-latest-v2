@@ -21,12 +21,12 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
-  const [country, setCountry] = useState("");
-  // const [country, setCountry] = useState("Canada");
+  // const [country, setCountry] = useState("");
+  const [country, setCountry] = useState("Canada");
   const [countryList, setCountryList] = useState([]);
   const [areaList, setAreaList] = useState([]);
-  const [miningArea, setMiningArea] = useState("");
-  // const [miningArea, setMiningArea] = useState("Timmins");
+  // const [miningArea, setMiningArea] = useState("");
+  const [miningArea, setMiningArea] = useState("Timmins");
 
   const selectedMap = useSelector(
     (state) => state.mapSelectorReducer.selectedMap

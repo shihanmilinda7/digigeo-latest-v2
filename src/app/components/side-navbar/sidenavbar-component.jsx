@@ -126,7 +126,9 @@ const SideNavbar = () => {
                     </span>
                     {/* <FaFilter className="absolute right-0 h-4 w-4 mr-6" /> */}
                   </button>
-                  <AreaFilter isOpenIn={isOpenIn} closePopup={closePopup} />
+                  {isOpenIn ? (
+                    <AreaFilter isOpenIn={isOpenIn} closePopup={closePopup} />
+                  ) : null}
                   <button
                     onClick={() => setIsOpenIn(true)}
                     className={`relative flex items-center justify-center border rounded-lg border-blue-500 focus:outline-none ${

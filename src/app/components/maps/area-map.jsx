@@ -33,6 +33,7 @@ export const AreaMap = () => {
   const router = useRouter();
   const [center, setCenter] = useState("");
   const [zoom, setZoom] = useState("");
+  const [syncPropertyFeatures1, setSyncPropertyFeatures1] = useState("");
   // const searchParams = useSearchParams();
   // const mapLyrs = searchParams.get("lyrs");
 
@@ -73,7 +74,7 @@ export const AreaMap = () => {
   );
 
   useEffect(() => {
-    console.log("ssssssssss")
+    console.log("ssssssssss");
     // if (areaZoomMode == "extent") {
     if (syncPropSourceRef.current) {
       mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
@@ -82,11 +83,16 @@ export const AreaMap = () => {
       });
     }
     // }
-  }, [syncPropertyFeatures]);
+  }, [syncPropertyFeatures1]);
 
   useEffect(() => {
     mouseScrollEvent();
   }, []);
+
+  useEffect(() => {
+    console.log("syncPropertyFeatures", syncPropertyFeatures);
+    setSyncPropertyFeatures1(syncPropertyFeatures);
+  }, [syncPropertyFeatures]);
 
   useEffect(() => {
     let newUrl;
@@ -298,10 +304,10 @@ export const AreaMap = () => {
             ref={syncPropVectorLayerRef}
             style={styleFunctionSyncProperties}
           >
-            {syncPropertyFeatures && (
+            {syncPropertyFeatures1 && (
               <olSourceVector
                 ref={syncPropSourceRef}
-                features={new GeoJSON().readFeatures(syncPropertyFeatures)}
+                features={new GeoJSON().readFeatures(syncPropertyFeatures1)}
               >
                 {/* <olFeature>
                 <olGeomCircle center={[5e6, 7e6]} radius={1e6} />
