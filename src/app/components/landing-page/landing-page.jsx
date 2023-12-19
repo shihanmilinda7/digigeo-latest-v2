@@ -19,7 +19,12 @@ import {
   setIsSideNavOpen,
   setSelectedMap,
 } from "../../../store/map-selector/map-selector-slice";
-import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
+import {
+  setAreaCountry,
+  setAreaMiningArea,
+  setAreaZoomMode,
+  setIsAreaSideNavOpen,
+} from "../../../store/area-map/area-map-slice";
 
 export const LandingPage = () => {
   let pathname = "";
@@ -51,6 +56,8 @@ export const LandingPage = () => {
   const mapLyrs = searchParams.get("lyrs");
   const mapZoom = searchParams.get("z");
   const mapCenter = searchParams.get("c");
+  const areaName = searchParams.get("ma");
+  const areaCountry = searchParams.get("co");
 
   useEffect(() => {
     console.log("mapType", mapType);
@@ -59,6 +66,7 @@ export const LandingPage = () => {
 
   const updateRedux = async () => {
     if (mapType) {
+      dispatch(setAreaZoomMode("custom"));
       dispatch(setSelectedMap(mapType));
       switch (mapType) {
         case "area":
@@ -74,8 +82,8 @@ export const LandingPage = () => {
           dispatch(setAreaZoomLevel(mapZoom));
           const tmpMapCenter = mapCenter.split(",").map(Number);
           dispatch(setAreaInitialCenter(tmpMapCenter));
-          // console.log("mapCenter", tmpMapCenter);
-
+          dispatch(setAreaCountry(areaCountry ? areaCountry : ""));
+          dispatch(setAreaMiningArea(areaName ? areaName : ""));
           break;
         case "company":
           dispatch(

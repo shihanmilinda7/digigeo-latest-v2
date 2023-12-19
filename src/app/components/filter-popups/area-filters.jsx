@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   setAreaCountry,
   setAreaMiningArea,
+  setAreaZoomMode,
   setIsAreaSideNavOpen,
 } from "../../../store/area-map/area-map-slice";
 
@@ -78,13 +79,14 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
 
   const searchAction = async () => {
     if (country && miningArea) {
-      const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=true&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+      const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=true&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}&co=${country}&ma=${miningArea}`;
       window.history.replaceState({}, "", newUrl);
       dispatch(setIsAreaSideNavOpen(true));
       // dispatch(setAreaCountry("Canada"));
       // dispatch(setAreaMiningArea("Timmins"));
       dispatch(setAreaCountry(country));
       dispatch(setAreaMiningArea(miningArea));
+      dispatch(setAreaZoomMode("extent"));
       closePopup();
     }
     // dispatch(setAreaState("Canada"));

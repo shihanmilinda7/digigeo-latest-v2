@@ -5,6 +5,7 @@ const initialState = {
   areaCountry: "",
   areaMiningArea: "",
   syncPropertyFeatures: undefined,
+  areaZoomMode: "custom",
 };
 
 const areaMapSlice = createSlice({
@@ -23,6 +24,9 @@ const areaMapSlice = createSlice({
     setSyncPropertyFeatures: (state, action) => {
       state.syncPropertyFeatures = action.payload;
     },
+    setAreaZoomMode: (state, action) => {
+      state.areaZoomMode = action.payload;
+    },
   },
 });
 
@@ -31,6 +35,7 @@ export const {
   setAreaMiningArea,
   setIsAreaSideNavOpen,
   setSyncPropertyFeatures,
+  setAreaZoomMode,
 } = areaMapSlice.actions;
 
 export default areaMapSlice.reducer;

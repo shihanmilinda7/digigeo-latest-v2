@@ -22,7 +22,7 @@ import { FaChevronLeft, FaChevronUp } from "react-icons/fa";
 import { setIsAreaSideNavOpen } from "../../../store/area-map/area-map-slice";
 import GeoJSON from "ol/format/GeoJSON";
 
-import { Circle as CircleStyle, Fill, Stroke, Style,Icon } from "ol/style";
+import { Circle as CircleStyle, Fill, Stroke, Style, Icon } from "ol/style";
 
 export const AreaMap = () => {
   let pathname = "";
@@ -59,29 +59,41 @@ export const AreaMap = () => {
   );
 
   const syncPropSourceRef = useRef(null);
-  const syncPropVectorLayerRef= useRef(null);
+  const syncPropVectorLayerRef = useRef(null);
 
-    const syncPropertyFeatures = useSelector(
+  const syncPropertyFeatures = useSelector(
     (state) => state.areaMapReducer.syncPropertyFeatures
   );
 
-           
+  const areaName = useSelector((state) => state.areaMapReducer.areaMiningArea);
+  const areaCountry = useSelector((state) => state.areaMapReducer.areaCountry);
+
+  const areaZoomMode = useSelector(
+    (state) => state.areaMapReducer.areaZoomMode
+  );
+
   useEffect(() => {
-    if (syncPropSourceRef.current) {
-      mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
-        padding: [200, 200, 200, 200],
-        duration: 3000,
-      });
+    if (areaZoomMode == "extent") {
+      if (syncPropSourceRef.current) {
+        mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
+          padding: [200, 200, 200, 200],
+          duration: 3000,
+        });
+      }
     }
   }, [syncPropertyFeatures]);
-
 
   useEffect(() => {
     mouseScrollEvent();
   }, []);
 
   useEffect(() => {
-    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${mapLyrs}&z=${zoom}&c=${center}`;
+    let newUrl;
+    if (areaName == "") {
+      newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${mapLyrs}&z=${zoom}&c=${center}`;
+    } else {
+      newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${mapLyrs}&z=${zoom}&c=${center}&co=${areaCountry}&ma=${areaName}`;
+    }
     window.history.replaceState({}, "", newUrl);
   }, [zoom, center]);
 
@@ -154,31 +166,30 @@ export const AreaMap = () => {
     dispatch(setIsAreaSideNavOpen(true));
   };
 
-//    const image = new CircleStyle({
-//   radius: 5,
-//   stroke: new Stroke({ color: "red", width: 1 }),
-// });
+  //    const image = new CircleStyle({
+  //   radius: 5,
+  //   stroke: new Stroke({ color: "red", width: 1 }),
+  // });
 
- const image = new Icon({
-      src: "./sync-prop.svg"  ,
-      scale: 1,
+  const image = new Icon({
+    src: "./sync-prop.svg",
+    scale: 1,
+  });
+
+  const styleFunctionSyncProperties = (feature) => {
+    console.log("s");
+    const s = new Style({
+      image,
+      stroke: new Stroke({
+        color: "red",
+        width: 2,
+      }),
+      fill: new Fill({
+        color: "rgba(255,23,0,0.2)",
+      }),
     });
- 
 
-    const styleFunctionSyncProperties = (feature) => {
-    console.log("s")
-      const s = new Style({
-       image,
-    stroke: new Stroke({
-      color: "red",
-      width: 2,
-    }),
-    fill: new Fill({
-      color: "rgba(255,23,0,0.2)",
-    }),
-      })
-        
-  return  s
+    return s;
   };
 
   return (
@@ -282,17 +293,21 @@ export const AreaMap = () => {
             ></olSourceXYZ>
           </olLayerTile>
 
-           <olLayerVector ref={syncPropVectorLayerRef} style={styleFunctionSyncProperties} >
-            { syncPropertyFeatures && 
-              <olSourceVector  ref={syncPropSourceRef} features={new GeoJSON().readFeatures(syncPropertyFeatures)}>
+          <olLayerVector
+            ref={syncPropVectorLayerRef}
+            style={styleFunctionSyncProperties}
+          >
+            {syncPropertyFeatures && (
+              <olSourceVector
+                ref={syncPropSourceRef}
+                features={new GeoJSON().readFeatures(syncPropertyFeatures)}
+              >
                 {/* <olFeature>
                 <olGeomCircle center={[5e6, 7e6]} radius={1e6} />
               </olFeature> */}
               </olSourceVector>
-            }
-         
+            )}
           </olLayerVector>
-          
         </Map>
       </div>
     </div>
