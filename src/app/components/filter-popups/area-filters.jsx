@@ -76,7 +76,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
   useEffect(() => {
     const f = async () => {
       const res = await fetch(
-        `http://44.208.84.139/miniatlas/areas/${country}`,
+        `https://atlas.ceyinfo.cloud/matlas/areas/${country}`,
         { cache: "force-cache" }
       );
       const d = await res.json();
@@ -105,7 +105,7 @@ const AreaFilter = ({ isOpenIn, closePopup }) => {
 
   useEffect(() => {
     const f = async () => {
-      const res = await fetch(`http://44.208.84.139/miniatlas/countrylist`, {
+      const res = await fetch(`https://atlas.ceyinfo.cloud/matlas/countrylist`, {
         cache: "force-cache",
       });
       const d = await res.json();

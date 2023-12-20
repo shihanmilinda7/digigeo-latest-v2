@@ -92,7 +92,7 @@ const AreaSideNavbar = () => {
   const getFeaturedCompanyDetails = async () => {
     const f = async () => {
       const res = await fetch(
-        `http://44.208.84.139/miniatlas/hotplayowenersview/${areaName}`,
+        `https://atlas.ceyinfo.cloud/matlas/hotplayfcompanylist/${areaName}`,
         { cache: "no-store" }
       );
       const d = await res.json();
@@ -111,7 +111,7 @@ const AreaSideNavbar = () => {
     const getFeaturedCompanyGeometry = async () => {
     const f = async () => {
       const res = await fetch(
-        `http://44.208.84.139/miniatlas/view_hotplay_table_with_sponsor/${areaName}`,
+        `https://atlas.ceyinfo.cloud/matlas/view_hotplay_table_with_sponsor/${areaName}`,
         { cache: "no-store" }
       );
      const d = await res.json();
@@ -142,7 +142,7 @@ const AreaSideNavbar = () => {
   const getSyncProperties = async () => {
     const f = async () => {
       const res = await fetch(
-        `http://44.208.84.139/miniatlas/tbl_sync_property_area/${areaName}`,
+        `https://atlas.ceyinfo.cloud/matlas/tbl_sync_property_area/${areaName}`,
         { cache: "no-store" }
       );
       const d = await res.json();
@@ -172,7 +172,7 @@ const AreaSideNavbar = () => {
   const getAssets = async () => {
     const f = async () => {
       const res = await fetch(
-        `http://44.208.84.139/miniatlas/view_sync_assets_linked_owner_amap/${areaName}`,
+        `https://atlas.ceyinfo.cloud/matlas/assetgeomsbyarea/${areaName}`,
         { cache: "no-store" }
       );
       const d = await res.json();
@@ -240,6 +240,7 @@ const AreaSideNavbar = () => {
                         <FeaturedCompanyDetailDiv
                           key={i.colour}
                           title={i.company2}
+                          companyid={i.companyid}
                           // onClick={() => console.log(featuredCompanies)}
                         >
                           <div

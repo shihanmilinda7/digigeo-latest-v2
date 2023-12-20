@@ -7,6 +7,7 @@ import { AiFillHome, AiFillQuestionCircle } from "react-icons/ai";
 import { MdEmail } from "react-icons/md";
 import { ThemeSwitcher } from "../theme-switcher";
 import { useSelector } from "react-redux";
+import Link from "next/link";
 
 const HomeNavbar = () => {
   //get pathname
@@ -75,9 +76,11 @@ const HomeNavbar = () => {
         "
       >
         <div className="flex">
+          <Link href="/" >
           <span className="pl-1 mx-auto text-xl font-black leading-none text-white dark:text-white select-none  flex items-center justify-center">
             DigiGeo<span className="text-white">Maps</span>
           </span>
+          </Link>
           {/* <img src="/logo.png"></img> */}
         </div>
 

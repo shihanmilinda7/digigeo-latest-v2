@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { MdInfoOutline } from "react-icons/md";
 import AreaFCompanyPopup from "./area-fcompany-popup";
-const FeaturedCompanyDetailDiv = ({ title, children, onClick }) => {
+const FeaturedCompanyDetailDiv = ({ companyid,title, children, onClick }) => {
   // const [isPopupOpen, setIsPopup]
   const [isOpenIn, setIsOpenIn] = useState();
 
@@ -43,6 +43,7 @@ const FeaturedCompanyDetailDiv = ({ title, children, onClick }) => {
               isOpenIn={isOpenIn}
               closePopup={closePopup}
               titleIn={title}
+              companyid={companyid}
             />
           ) : null}
         </div>
