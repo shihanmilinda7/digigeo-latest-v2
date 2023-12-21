@@ -1,14 +1,27 @@
 // components/Accordion.js
-import React, { useState } from "react";
+"use client";
+import React, { useEffect, useState } from "react";
 import { MdInfoOutline } from "react-icons/md";
 import AreaFCompanyPopup from "./area-fcompany-popup";
+
 const FeaturedCompanyDetailDiv = ({ title, children, onClick }) => {
   // const [isPopupOpen, setIsPopup]
-  const [isOpenIn, setIsOpenIn] = useState();
+  const [isOpenIn, setIsOpenIn] = useState(false);
+  const [toggleOpen, setToggleOpen] = useState(1);
 
   const closePopup = () => {
     setIsOpenIn(false);
   };
+
+  const openPopup =  () => {
+    setIsOpenIn(true);
+    setToggleOpen((prv) => prv+1*1);
+    console.log("title", title);
+  };
+
+  useEffect(() => {
+    console.log("toggleOpen", toggleOpen);
+  }, [toggleOpen]);
 
   return (
     <div>
@@ -31,20 +44,21 @@ const FeaturedCompanyDetailDiv = ({ title, children, onClick }) => {
           {/* <span onClick={toggleAccordion} className="cursor-pointer">
             {isOpen ? <FaChevronDown /> : <FaChevronLeft />}
           </span> */}
-          <span className="">
+          {/* <span className="">
             <MdInfoOutline
               className="cursor-pointer h-4 w-4"
-              onClick={() => setIsOpenIn(true)}
+              onClick={openPopup}
               // onClick={() => console.log("title", title)}
             />
-          </span>
-          {isOpenIn ? (
-            <AreaFCompanyPopup
-              isOpenIn={isOpenIn}
-              closePopup={closePopup}
-              titleIn={title}
-            />
-          ) : null}
+          </span> */}
+          <AreaFCompanyPopup
+            isOpenIn={isOpenIn}
+            closePopup={closePopup}
+            titleIn={title}
+            toggleOpenIn={toggleOpen}
+          />
+          {/* {isOpenIn ? (
+          ) : null} */}
         </div>
       </div>
     </div>

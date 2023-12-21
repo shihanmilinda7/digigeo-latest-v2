@@ -74,7 +74,7 @@ export const AreaMap = () => {
   );
 
   useEffect(() => {
-    console.log("ssssssssss");
+    // console.log("ssssssssss");
     // if (areaZoomMode == "extent") {
     if (syncPropSourceRef.current) {
       mapRef.current?.getView()?.fit(syncPropSourceRef.current?.getExtent(), {
@@ -90,7 +90,7 @@ export const AreaMap = () => {
   }, []);
 
   useEffect(() => {
-    console.log("syncPropertyFeatures", syncPropertyFeatures);
+    // console.log("syncPropertyFeatures", syncPropertyFeatures);
     setSyncPropertyFeatures1(syncPropertyFeatures);
   }, [syncPropertyFeatures]);
 
@@ -154,16 +154,28 @@ export const AreaMap = () => {
   const collapsibleBtnHandler = () => {
     const tmpValue = String(isSideNavOpen).toLowerCase() === "true";
     dispatch(setIsSideNavOpen(!tmpValue));
-    const newUrl = `${
-      window.location.pathname
-    }?t=${selectedMap}&sn=${!tmpValue}&sn2=${isAreaSideNavOpen}&lyrs=${mapLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    let newUrl;
+    if (areaName == "") {
+      newUrl = `${
+        window.location.pathname
+      }?t=${selectedMap}&sn=${!tmpValue}&sn2=${isAreaSideNavOpen}&lyrs=${mapLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    } else {
+      newUrl = `${
+        window.location.pathname
+      }?t=${selectedMap}&sn=${!tmpValue}&sn2=${isAreaSideNavOpen}&lyrs=${mapLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}&co=${areaCountry}&ma=${areaName}`;
+    }
     window.history.replaceState({}, "", newUrl);
     // dispatch(setUrlUpdate());
   };
 
   const setLyrs = (lyrs) => {
     dispatch(setAreaLyrs(lyrs));
-    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${lyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    let newUrl;
+    if (areaName == "") {
+      newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${lyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    } else {
+      newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=${isAreaSideNavOpen}&lyrs=${lyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}&co=${areaCountry}&ma=${areaName}`;
+    }
     window.history.replaceState({}, "", newUrl);
   };
 

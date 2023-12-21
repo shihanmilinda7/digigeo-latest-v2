@@ -8,12 +8,14 @@ import { FaFilter } from "react-icons/fa";
 import { AiOutlineCloseCircle } from "react-icons/ai";
 import NextTextInputField from "../common-comp/next-text-input-fields";
 import { useDispatch, useSelector } from "react-redux";
+import { MdInfoOutline } from "react-icons/md";
 
-const AreaFCompanyPopup = ({ isOpenIn, closePopup, titleIn }) => {
+const AreaFCompanyPopup = ({ isOpenIn, closePopup, titleIn, toggleOpenIn }) => {
   const dispatch = useDispatch();
 
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState("");
+  // const [toggleOpen, setToggleOpen] = useState("");
 
   const areaName = useSelector((state) => state.areaMapReducer.areaMiningArea);
   const areaCountry = useSelector((state) => state.areaMapReducer.areaCountry);
@@ -36,19 +38,25 @@ const AreaFCompanyPopup = ({ isOpenIn, closePopup, titleIn }) => {
   };
 
   useEffect(() => {
+    // console.log("isOpenIn", isOpenIn);
     setIsOpen(isOpenIn);
-  }, [isOpenIn]);
+  }, [isOpenIn, toggleOpenIn]);
 
   useEffect(() => {
     setTitle(titleIn);
-    // console.log("title", title);
   }, [titleIn]);
 
   return (
     <div>
+      <span className="">
+        <MdInfoOutline
+          className="cursor-pointer h-4 w-4"
+          onClick={() => setIsOpen(true)}
+        />
+      </span>
       <Modal
         isOpen={isOpen}
-        onRequestClose={closePopup}
+        onRequestClose={() => setIsOpen(false)}
         // shouldCloseOnOverlayClick={false}
         style={customStyles}
         ariaHideApp={false}
@@ -59,7 +67,7 @@ const AreaFCompanyPopup = ({ isOpenIn, closePopup, titleIn }) => {
               {title}
             </span>
             <AiOutlineCloseCircle
-              onClick={closePopup}
+              onClick={() => setIsOpen(false)}
               className="h-6 w-6 cursor-pointer absolute right-0 mt-2 mr-6"
             />
           </div>

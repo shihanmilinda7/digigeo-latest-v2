@@ -67,6 +67,8 @@ const AreaSideNavbar = () => {
   );
 
   const areaName = useSelector((state) => state.areaMapReducer.areaMiningArea);
+  const areaCountry = useSelector((state) => state.areaMapReducer.areaCountry);
+
   const syncPropertyFeatures = useSelector(
     (state) => state.areaMapReducer.syncPropertyFeatures
   );
@@ -80,7 +82,13 @@ const AreaSideNavbar = () => {
 
   const closeSecondNavBar = () => {
     // setIsSecondSideOpen(false);
-    const newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=false&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+
+    let newUrl;
+    if (areaName == "") {
+      newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=false&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}`;
+    } else {
+      newUrl = `${window.location.pathname}?t=${selectedMap}&sn=${isSideNavOpen}&sn2=false&lyrs=${areaLyrs}&z=${areaZoomLevel}&c=${areaInitialCenter}&co=${areaCountry}&ma=${areaName}`;
+    }
     window.history.replaceState({}, "", newUrl);
     dispatch(setIsAreaSideNavOpen(false));
   };
