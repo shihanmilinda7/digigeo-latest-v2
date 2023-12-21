@@ -5,6 +5,8 @@ const initialState = {
   areaCountry: "",
   areaMiningArea: "",
   syncPropertyFeatures: undefined,
+  featuredPropertyFeatures: undefined,
+  assetFeatures: undefined,
   areaZoomMode: "custom",
 };
 
@@ -24,6 +26,12 @@ const areaMapSlice = createSlice({
     setSyncPropertyFeatures: (state, action) => {
       state.syncPropertyFeatures = action.payload;
     },
+    setFPropertyFeatures: (state, action) => {
+      state.featuredPropertyFeatures = action.payload;
+    },
+    setAssetFeatures: (state, action) => {
+      state.assetFeatures = action.payload;
+    },
     setAreaZoomMode: (state, action) => {
       state.areaZoomMode = action.payload;
     },
@@ -35,6 +43,8 @@ export const {
   setAreaMiningArea,
   setIsAreaSideNavOpen,
   setSyncPropertyFeatures,
+  setFPropertyFeatures,
+  setAssetFeatures,
   setAreaZoomMode,
 } = areaMapSlice.actions;
 
